@@ -22,13 +22,8 @@ class MyApp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 EasyAutocomplete(
-                  suggestions: ['Afeganistao', 'Mocambique', 'Porgual', 'Madagascar', 'Alemanha', 'Dinamarca', 'Australia', 'Brasil', 'Gana'],
-                  onChanged: (value) => print(value)
-                ),
-                TextField(),
-                ElevatedButton(
-                  child: Text('Go'),
-                  onPressed: () {}
+                  suggestions: ['Afeganistao', 'Albania', 'Algeria', 'Mocambique', 'Portugal', 'Madagascar', 'Alemanha', 'Dinamarca', 'Australia', 'Brasil', 'Gana'],
+                  onChanged: (value) => print('')
                 )
               ],
             )

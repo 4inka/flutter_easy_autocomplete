@@ -3,19 +3,13 @@ import 'package:flutter/material.dart';
 class FilterableList extends StatelessWidget {
   final List<String> items;
   final Function(String) onItemTapped;
-  final String search;
+
+  final ScrollController _scrollController = ScrollController(initialScrollOffset: 0);
 
   FilterableList({
     required this.items,
-    required this.onItemTapped,
-    required this.search
+    required this.onItemTapped
   });
-
-  List<String> _getList() {
-    return items.where((element) {
-      return element.toLowerCase().contains(search.toLowerCase());
-    }).toList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +18,22 @@ class FilterableList extends StatelessWidget {
         maxHeight: 100
       ),
       child: Visibility(
-        visible: _getList().isNotEmpty,
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          children: List.generate(_getList().length, (index) {
-            return ListTile(
-              dense: true,
-              title: Text(_getList()[index]),
-              onTap: () => onItemTapped(_getList()[index])
-            );
-          })
+        visible: items.isNotEmpty,
+        child: Scrollbar(
+          //isAlwaysShown: true,
+          controller: _scrollController,
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                dense: true,
+                title: Text(items[index]),
+                onTap: () => onItemTapped(items[index])
+              );
+            }
+          )
         )
       )
     );

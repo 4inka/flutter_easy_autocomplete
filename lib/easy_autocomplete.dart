@@ -3,6 +3,7 @@ library easy_autocomplete;
 import 'package:easy_autocomplete/widgets/filterable_list.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class EasyAutocomplete extends StatefulWidget {
   final List<String> suggestions;
   TextEditingController? controller;
@@ -21,7 +22,6 @@ class EasyAutocomplete extends StatefulWidget {
 }
 
 class _EasyAutocompleteState extends State<EasyAutocomplete> {
-  bool _suggestionClicked = false;
   bool _hasOpenedOverlay = false;
 
   late OverlayEntry _overlayEntry;
@@ -35,58 +35,58 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     Future.delayed(Duration.zero,() {
       initializeOverlayEntry();
     });
-    
   }
 
   void initializeOverlayEntry() {
-      RenderBox renderBox = context.findRenderObject() as RenderBox;
-      var size = renderBox.size;
-      var offset = renderBox.localToGlobal(Offset.zero);
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    var size = renderBox.size;
+    var offset = renderBox.localToGlobal(Offset.zero);
 
-      _overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          left: offset.dx,
-          top: offset.dy + size.height + 5.0,
-          width: size.width,
-          child: CompositedTransformFollower(
-            link: _layerLink,
-            showWhenUnlinked: false,
-            offset: Offset(0.0, size.height + 5.0),
-            child: Material(
-              elevation: 4.0,
-              child: FilterableList(
-                search: widget.controller!.text,
-                items: widget.suggestions,
-                onItemTapped: (value) {
-                  setState(() => _suggestionClicked = true);
-                  widget.controller!
-                    ..value = TextEditingValue(
-                      text: value,
-                      selection: TextSelection.collapsed(
-                        offset: value.length
-                      )
-                    );
-                  widget.onChanged!(value);
-                  closeOverlay();
-                  setState(() => _suggestionClicked = false);
-                }
-              )
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        left: offset.dx,
+        top: offset.dy + size.height + 5.0,
+        width: size.width,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0.0, size.height + 5.0),
+          child: Material(
+            elevation: 4.0,
+            child: FilterableList(
+              items: widget.suggestions.where((element) {
+                return element.toLowerCase().contains(widget.controller!.value.text.toLowerCase());
+              }).toList(),
+              onItemTapped: (value) {
+                widget.controller!
+                  ..value = TextEditingValue(
+                    text: value,
+                    selection: TextSelection.collapsed(
+                      offset: value.length
+                    )
+                  );
+                widget.onChanged!(value);
+                closeOverlay();
+              }
             )
           )
         )
-      );
+      )
+    );
   }
 
   void openOverlay() {
-    if (!_hasOpenedOverlay)
+    if (!_hasOpenedOverlay) {
       Overlay.of(context)!.insert(_overlayEntry);
-    setState(() => _hasOpenedOverlay = true );
+      setState(() => _hasOpenedOverlay = true );
+    }
   }
 
   void closeOverlay() {
-    if (_hasOpenedOverlay)
+    if (_hasOpenedOverlay) {
       _overlayEntry.remove();
-    setState(() => _hasOpenedOverlay = false );
+      setState(() => _hasOpenedOverlay = false );
+    }
   }
 
   @override
@@ -98,8 +98,11 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
           decoration: widget.decoration,
           controller: widget.controller,
           onChanged: (value) {
-            if (!_suggestionClicked)
-              openOverlay();
+            openOverlay();
+            widget.onChanged!(value);
+          },
+          onFieldSubmitted: (value) {
+            closeOverlay();
             widget.onChanged!(value);
           },
           onEditingComplete: () => closeOverlay()
