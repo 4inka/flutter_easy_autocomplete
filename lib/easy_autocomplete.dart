@@ -27,7 +27,7 @@
 
 library easy_autocomplete;
 
-import 'package:easy_autocomplete/widgets/filterable_list.dart';
+import 'package:easy_autocomplete/filterable_list.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -62,6 +62,9 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     Future.delayed(Duration.zero,() {
       initializeOverlayEntry();
     });
+    widget.controller!.addListener(() {
+      _overlayEntry.markNeedsBuild();
+    });
   }
 
   void initializeOverlayEntry() {
@@ -78,24 +81,21 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
           link: _layerLink,
           showWhenUnlinked: false,
           offset: Offset(0.0, size.height + 5.0),
-          child: Material(
-            elevation: 4.0,
-            child: FilterableList(
-              items: widget.suggestions.where((element) {
-                return element.toLowerCase().contains(widget.controller!.value.text.toLowerCase());
-              }).toList(),
-              onItemTapped: (value) {
-                widget.controller!
-                  ..value = TextEditingValue(
-                    text: value,
-                    selection: TextSelection.collapsed(
-                      offset: value.length
-                    )
-                  );
-                widget.onChanged!(value);
-                closeOverlay();
-              }
-            )
+          child: FilterableList(
+            items: widget.suggestions.where((element) {
+              return element.toLowerCase().contains(widget.controller!.value.text.toLowerCase());
+            }).toList(),
+            onItemTapped: (value) {
+              widget.controller!
+                ..value = TextEditingValue(
+                  text: value,
+                  selection: TextSelection.collapsed(
+                    offset: value.length
+                  )
+                );
+              widget.onChanged!(value);
+              closeOverlay();
+            }
           )
         )
       )
