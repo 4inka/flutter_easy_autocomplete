@@ -16,16 +16,15 @@ class MyApp extends StatelessWidget {
       ),
       home: SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+            title: Text('Example')
+          ),
           body: Container(
             padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                EasyAutocomplete(
-                  suggestions: ['Afeganistao', 'Albania', 'Algeria', 'Mocambique', 'Portugal', 'Madagascar', 'Alemanha', 'Dinamarca', 'Australia', 'Brasil', 'Gana'],
-                  onChanged: (value) => print('')
-                )
-              ],
+            alignment: Alignment.center,
+            child: EasyAutocomplete(
+              suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brasil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
+              onChanged: (value) => print(value)
             )
           )
         ),
