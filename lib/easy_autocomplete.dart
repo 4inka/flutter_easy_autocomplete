@@ -30,7 +30,6 @@ library easy_autocomplete;
 import 'package:easy_autocomplete/filterable_list.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class EasyAutocomplete extends StatefulWidget {
   final List<String> suggestions;
   TextEditingController? controller;
@@ -55,16 +54,25 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
 
   final LayerLink _layerLink = LayerLink();
 
+  List<String> _suggestions = [];
+
   @override
   void initState() {
     super.initState();
-    widget.controller ??= TextEditingController();
     Future.delayed(Duration.zero,() {
       initializeOverlayEntry();
     });
+    widget.controller ??= TextEditingController();
     widget.controller!.addListener(() {
+      updateSuggestions(widget.controller!.text);
       _overlayEntry.markNeedsBuild();
     });
+  }
+
+  void updateSuggestions(String input) {
+    _suggestions = widget.suggestions.where((element) {
+      return element.toLowerCase().contains(input.toLowerCase());
+    }).toList();
   }
 
   void initializeOverlayEntry() {
@@ -82,9 +90,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
           showWhenUnlinked: false,
           offset: Offset(0.0, size.height + 5.0),
           child: FilterableList(
-            items: widget.suggestions.where((element) {
-              return element.toLowerCase().contains(widget.controller!.value.text.toLowerCase());
-            }).toList(),
+            items: _suggestions,
             onItemTapped: (value) {
               widget.controller!
                 ..value = TextEditingValue(
@@ -140,5 +146,11 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
         },
       )
     );
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null)
+    super.dispose();
   }
 }
