@@ -29,96 +29,124 @@ library easy_autocomplete;
 
 import 'package:easy_autocomplete/filterable_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EasyAutocomplete extends StatefulWidget {
   final List<String> suggestions;
-  TextEditingController? controller;
+  final TextEditingController? controller;
   final InputDecoration? decoration;
   final Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatter;
 
   EasyAutocomplete({
     required this.suggestions,
     this.controller,
     this.decoration,
-    this.onChanged
-  });
+    this.onChanged,
+    this.inputFormatter
+  }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time');
 
   @override
-  State<EasyAutocomplete> createState() => _EasyAutocompleteState();
+  State<EasyAutocomplete> createState() => _EasyAutocompleteState(
+    controller: controller,
+    decoration: decoration,
+    onChanged: onChanged,
+    suggestions: suggestions,
+    inputFormatter: inputFormatter
+  );
 }
 
 class _EasyAutocompleteState extends State<EasyAutocomplete> {
+  final List<String> suggestions;
+  final TextEditingController? controller;
+  final InputDecoration? decoration;
+  final Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatter;
+
+  late TextFormField _textFormField;
   bool _hasOpenedOverlay = false;
-
-  late OverlayEntry _overlayEntry;
-
+  OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
-
   List<String> _suggestions = [];
 
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero,() {
-      initializeOverlayEntry();
-    });
-    widget.controller ??= TextEditingController();
-    widget.controller!.addListener(() {
-      updateSuggestions(widget.controller!.text);
-      _overlayEntry.markNeedsBuild();
-    });
-  }
-
-  void updateSuggestions(String input) {
-    _suggestions = widget.suggestions.where((element) {
-      return element.toLowerCase().contains(input.toLowerCase());
-    }).toList();
-  }
-
-  void initializeOverlayEntry() {
-    RenderBox renderBox = context.findRenderObject() as RenderBox;
-    var size = renderBox.size;
-    var offset = renderBox.localToGlobal(Offset.zero);
-
-    _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        left: offset.dx,
-        top: offset.dy + size.height + 5.0,
-        width: size.width,
-        child: CompositedTransformFollower(
-          link: _layerLink,
-          showWhenUnlinked: false,
-          offset: Offset(0.0, size.height + 5.0),
-          child: FilterableList(
-            items: _suggestions,
-            onItemTapped: (value) {
-              widget.controller!
-                ..value = TextEditingValue(
-                  text: value,
-                  selection: TextSelection.collapsed(
-                    offset: value.length
-                  )
-                );
-              widget.onChanged!(value);
-              closeOverlay();
-            }
-          )
-        )
-      )
+  _EasyAutocompleteState({
+    required this.controller,
+    required this.decoration,
+    required this.onChanged,
+    required this.inputFormatter,
+    required this.suggestions
+  }) {
+    _textFormField = TextFormField(
+      decoration: decoration ?? InputDecoration(),
+      controller: controller ?? TextEditingController(),
+      inputFormatters: inputFormatter ?? [],
+      onChanged: (value) {
+        openOverlay();
+        onChanged!(value);
+      },
+      onFieldSubmitted: (value) {
+        closeOverlay();
+        onChanged!(value);
+      },
+      onEditingComplete: () => closeOverlay()
     );
+    _textFormField.controller!.addListener(() {
+      updateSuggestions(_textFormField.controller!.text);
+    });
   }
 
   void openOverlay() {
+    if (_overlayEntry == null) {
+      RenderBox renderBox = context.findRenderObject() as RenderBox;
+      var size = renderBox.size;
+      var offset = renderBox.localToGlobal(Offset.zero);
+
+      _overlayEntry ??= OverlayEntry(
+        builder: (context) => Positioned(
+          left: offset.dx,
+          top: offset.dy + size.height + 5.0,
+          width: size.width,
+          child: CompositedTransformFollower(
+            link: _layerLink,
+            showWhenUnlinked: false,
+            offset: Offset(0.0, size.height + 5.0),
+            child: FilterableList(
+              items: _suggestions,
+              onItemTapped: (value) {
+                _textFormField.controller!
+                  ..value = TextEditingValue(
+                    text: value,
+                    selection: TextSelection.collapsed(
+                      offset: value.length
+                    )
+                  );
+                onChanged!(value);
+                closeOverlay();
+              }
+            )
+          )
+        )
+      );
+    }
     if (!_hasOpenedOverlay) {
-      Overlay.of(context)!.insert(_overlayEntry);
+      Overlay.of(context)!.insert(_overlayEntry!);
       setState(() => _hasOpenedOverlay = true );
     }
   }
 
   void closeOverlay() {
     if (_hasOpenedOverlay) {
-      _overlayEntry.remove();
+      _overlayEntry!.remove();
       setState(() => _hasOpenedOverlay = false );
+    }
+  }
+
+  void updateSuggestions(String input) {
+    _suggestions = suggestions.where((element) {
+      return element.toLowerCase().contains(input.toLowerCase());
+    }).toList();
+    if(_overlayEntry != null) {
+      _overlayEntry!.markNeedsBuild();
     }
   }
 
@@ -127,30 +155,19 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     return CompositedTransformTarget(
       link: _layerLink,
       child: Focus(
-        child: TextFormField(
-          decoration: widget.decoration,
-          controller: widget.controller,
-          onChanged: (value) {
-            openOverlay();
-            widget.onChanged!(value);
-          },
-          onFieldSubmitted: (value) {
-            closeOverlay();
-            widget.onChanged!(value);
-          },
-          onEditingComplete: () => closeOverlay()
-        ),
+        child: _textFormField,
         onFocusChange: (hasFocus) {
           if(hasFocus) openOverlay();
           else closeOverlay();
-        },
+        }
       )
     );
   }
 
   @override
   void dispose() {
-    if (widget.controller == null)
+    if (_overlayEntry != null) _overlayEntry!.dispose();
+    if (controller != null) controller!.dispose();
     super.dispose();
   }
 }
