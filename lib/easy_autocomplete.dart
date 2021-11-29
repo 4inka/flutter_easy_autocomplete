@@ -37,13 +37,15 @@ class EasyAutocomplete extends StatefulWidget {
   final InputDecoration? decoration;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatter;
+  final String initialValue;
 
   EasyAutocomplete({
     required this.suggestions,
     this.controller,
     this.decoration,
     this.onChanged,
-    this.inputFormatter
+    this.inputFormatter,
+    this.initialValue = ''
   }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time');
 
   @override
@@ -52,7 +54,8 @@ class EasyAutocomplete extends StatefulWidget {
     decoration: decoration,
     onChanged: onChanged,
     suggestions: suggestions,
-    inputFormatter: inputFormatter
+    inputFormatter: inputFormatter,
+    initialValue: initialValue
   );
 }
 
@@ -62,6 +65,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   final InputDecoration? decoration;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatter;
+  final String? initialValue;
 
   late TextFormField _textFormField;
   bool _hasOpenedOverlay = false;
@@ -74,9 +78,11 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     required this.decoration,
     required this.onChanged,
     required this.inputFormatter,
-    required this.suggestions
+    required this.suggestions,
+    required this.initialValue
   }) {
     _textFormField = TextFormField(
+      initialValue: initialValue,
       decoration: decoration ?? InputDecoration(),
       controller: controller ?? TextEditingController(),
       inputFormatters: inputFormatter ?? [],
