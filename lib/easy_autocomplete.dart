@@ -37,7 +37,7 @@ class EasyAutocomplete extends StatefulWidget {
   final InputDecoration? decoration;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatter;
-  final String initialValue;
+  final String? initialValue;
 
   EasyAutocomplete({
     required this.suggestions,
@@ -45,7 +45,7 @@ class EasyAutocomplete extends StatefulWidget {
     this.decoration,
     this.onChanged,
     this.inputFormatter,
-    this.initialValue = ''
+    this.initialValue
   }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time');
 
   @override
@@ -82,7 +82,6 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     required this.initialValue
   }) {
     _textFormField = TextFormField(
-      initialValue: initialValue,
       decoration: decoration ?? InputDecoration(),
       controller: controller ?? TextEditingController(),
       inputFormatters: inputFormatter ?? [],
@@ -96,6 +95,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
       },
       onEditingComplete: () => closeOverlay()
     );
+    _textFormField.controller!.text = initialValue ?? '';
     _textFormField.controller!.addListener(() {
       updateSuggestions(_textFormField.controller!.text);
     });
