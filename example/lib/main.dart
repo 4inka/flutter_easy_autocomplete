@@ -6,7 +6,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,11 +22,14 @@ class MyApp extends StatelessWidget {
             padding: EdgeInsets.all(10),
             alignment: Alignment.center,
             child: EasyAutocomplete(
-              suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brasil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
-              onChanged: (value) => print(value)
+              suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brazil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
+              onChanged: (value) => print(value),
+              validator: (value) {
+                return value!.isEmpty ? 'This field should not be empty' : null;
+              }
             )
           )
-        ),
+        )
       )
     );
   }

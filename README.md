@@ -6,7 +6,7 @@
 A Flutter plugin to handle input autocomplete suggestions
 
 ## Preview
-![Preview](https://raw.githubusercontent.com/4inka/flutter_quantity_input/main/preview/preview.gif)
+![Preview](https://raw.githubusercontent.com/4inka/flutter_easy_autocomplete/main/preview/preview.gif)
 
 ## Usage
 
@@ -15,27 +15,20 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 ``` yaml
 dependencies:
   ...
-  easy_autocomplete: ^0.0.1
+  easy_autocomplete: ^1.0.0
 ```
 
 You can create a simple autocomplete input widget with the following example:
 
 ``` dart
-import 'package:flutter/material.dart';
 import 'package:easy_autocomplete/easy_autocomplete.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int simpleIntInput = 0;
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.all(10),
             alignment: Alignment.center,
             child: EasyAutocomplete(
-              suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brasil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
+              suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brazil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
               onChanged: (value) => print(value)
             )
           )

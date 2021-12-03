@@ -27,77 +27,90 @@
 
 library easy_autocomplete;
 
-import 'package:easy_autocomplete/filterable_list.dart';
+import 'package:easy_autocomplete/widgets/filterable_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class EasyAutocomplete extends StatefulWidget {
+  /// 
   final List<String> suggestions;
+  /// 
   final TextEditingController? controller;
+  /// 
   final InputDecoration? decoration;
+  /// 
   final Function(String)? onChanged;
+  /// 
   final List<TextInputFormatter>? inputFormatter;
+  /// 
   final String? initialValue;
+  /// 
+  final String? Function(String?)? validator;
+  /// 
+  final AutovalidateMode autovalidateMode;
 
+  /// Creates a autocomplete widget to help you manage your suggestions
   EasyAutocomplete({
     required this.suggestions,
     this.controller,
     this.decoration,
     this.onChanged,
     this.inputFormatter,
-    this.initialValue
-  }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time');
+    this.initialValue,
+    this.validator,
+    this.autovalidateMode = AutovalidateMode.always
+  }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time'),
+    assert(!(controller != null && initialValue != null), 'controller and initialValue cannot be used at the same time');
 
   @override
-  State<EasyAutocomplete> createState() => _EasyAutocompleteState(
-    controller: controller,
-    decoration: decoration,
-    onChanged: onChanged,
-    suggestions: suggestions,
-    inputFormatter: inputFormatter,
-    initialValue: initialValue
-  );
+  State<EasyAutocomplete> createState() => _EasyAutocompleteState();
 }
 
 class _EasyAutocompleteState extends State<EasyAutocomplete> {
-  final List<String> suggestions;
-  final TextEditingController? controller;
-  final InputDecoration? decoration;
-  final Function(String)? onChanged;
-  final List<TextInputFormatter>? inputFormatter;
-  final String? initialValue;
-
   late TextFormField _textFormField;
   bool _hasOpenedOverlay = false;
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
   List<String> _suggestions = [];
+  String errorMessage = '';
 
-  _EasyAutocompleteState({
-    required this.controller,
-    required this.decoration,
-    required this.onChanged,
-    required this.inputFormatter,
-    required this.suggestions,
-    required this.initialValue
-  }) {
+  @override
+  void initState() {
+    super.initState();
     _textFormField = TextFormField(
-      decoration: decoration ?? InputDecoration(),
-      controller: controller ?? TextEditingController(),
-      inputFormatters: inputFormatter ?? [],
+      decoration: widget.decoration ?? InputDecoration(),
+      controller: widget.controller ?? TextEditingController(),
+      inputFormatters: widget.inputFormatter ?? [],
       onChanged: (value) {
         openOverlay();
-        onChanged!(value);
+        widget.onChanged!(value);
       },
       onFieldSubmitted: (value) {
         closeOverlay();
-        onChanged!(value);
+        widget.onChanged!(value);
       },
-      onEditingComplete: () => closeOverlay()
+      onEditingComplete: () => closeOverlay(),
+      autovalidateMode: widget.autovalidateMode,
+      validator: (value) {
+        String? validate = widget.validator!(value);
+        if (validate != null && validate.isNotEmpty) {
+          return '';
+        }
+
+        return null;
+      }
     );
-    _textFormField.controller!.text = initialValue ?? '';
+    _textFormField.controller!.text = widget.initialValue ?? '';
     _textFormField.controller!.addListener(() {
       updateSuggestions(_textFormField.controller!.text);
+
+      String? validate = widget.validator!(_textFormField.controller!.text);
+      if (validate != null && validate.isNotEmpty) {
+        setState(() => errorMessage = validate);
+      }
+      else {
+        setState(() => errorMessage = '');
+      }
     });
   }
 
@@ -126,7 +139,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                       offset: value.length
                     )
                   );
-                onChanged!(value);
+                widget.onChanged!(value);
                 closeOverlay();
               }
             )
@@ -148,7 +161,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   }
 
   void updateSuggestions(String input) {
-    _suggestions = suggestions.where((element) {
+    _suggestions = widget.suggestions.where((element) {
       return element.toLowerCase().contains(input.toLowerCase());
     }).toList();
     if(_overlayEntry != null) {
@@ -161,7 +174,27 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     return CompositedTransformTarget(
       link: _layerLink,
       child: Focus(
-        child: _textFormField,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _textFormField,
+            Visibility(
+              visible: errorMessage.isNotEmpty,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 3),
+                child: Text(
+                  errorMessage,
+                  style: TextStyle(
+                    color: Colors.red[800],
+                    fontSize: 12
+                  )
+                ),
+              )
+            )
+          ]
+        ),
         onFocusChange: (hasFocus) {
           if(hasFocus) openOverlay();
           else closeOverlay();
@@ -173,7 +206,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   @override
   void dispose() {
     if (_overlayEntry != null) _overlayEntry!.dispose();
-    if (controller != null) controller!.dispose();
+    if (widget.controller != null) widget.controller!.dispose();
     super.dispose();
   }
 }
