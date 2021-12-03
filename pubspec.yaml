@@ -1,7 +1,7 @@
 name: easy_autocomplete
-description: A simple and useful autocomplete TextFormField
+description: A simple but flexible autocomplete TextFormField
 version: 1.0.0
-homepage:
+homepage: https://github.com/4inka/flutter_easy_autocomplete
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
