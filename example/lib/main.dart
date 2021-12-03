@@ -23,10 +23,7 @@ class MyApp extends StatelessWidget {
             alignment: Alignment.center,
             child: EasyAutocomplete(
               suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brazil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
-              onChanged: (value) => print(value),
-              validator: (value) {
-                return value!.isEmpty ? 'This field should not be empty' : null;
-              }
+              onChanged: (value) => print(value)
             )
           )
         )
