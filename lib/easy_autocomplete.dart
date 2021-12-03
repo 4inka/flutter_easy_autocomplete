@@ -32,33 +32,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class EasyAutocomplete extends StatefulWidget {
-  /// 
+  /// The list of suggestions to be displayed
   final List<String> suggestions;
-  /// 
+  /// Text editing controller
   final TextEditingController? controller;
-  /// 
-  final InputDecoration? decoration;
-  /// 
+  /// Can be used to decorate the input
+  final InputDecoration decoration;
+  /// Function that handles the changes to the input
   final Function(String)? onChanged;
-  /// 
-  final List<TextInputFormatter>? inputFormatter;
-  /// 
+  /// Can be used to set custom inputFormatters to field
+  final List<TextInputFormatter> inputFormatter;
+  /// Can be used to set the textfield initial value
   final String? initialValue;
-  /// 
-  final String? Function(String?)? validator;
-  /// 
-  final AutovalidateMode autovalidateMode;
+  /// Can be used to set the text capitalization type
+  final TextCapitalization textCapitalization;
 
   /// Creates a autocomplete widget to help you manage your suggestions
   EasyAutocomplete({
     required this.suggestions,
     this.controller,
-    this.decoration,
+    this.decoration = const InputDecoration(),
     this.onChanged,
-    this.inputFormatter,
+    this.inputFormatter = const [],
     this.initialValue,
-    this.validator,
-    this.autovalidateMode = AutovalidateMode.always
+    this.textCapitalization = TextCapitalization.sentences,
   }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time'),
     assert(!(controller != null && initialValue != null), 'controller and initialValue cannot be used at the same time');
 
@@ -67,20 +64,20 @@ class EasyAutocomplete extends StatefulWidget {
 }
 
 class _EasyAutocompleteState extends State<EasyAutocomplete> {
+  final LayerLink _layerLink = LayerLink();
   late TextFormField _textFormField;
   bool _hasOpenedOverlay = false;
   OverlayEntry? _overlayEntry;
-  final LayerLink _layerLink = LayerLink();
   List<String> _suggestions = [];
-  String errorMessage = '';
 
   @override
   void initState() {
     super.initState();
     _textFormField = TextFormField(
-      decoration: widget.decoration ?? InputDecoration(),
+      decoration: widget.decoration,
       controller: widget.controller ?? TextEditingController(),
-      inputFormatters: widget.inputFormatter ?? [],
+      inputFormatters: widget.inputFormatter,
+      textCapitalization: widget.textCapitalization,
       onChanged: (value) {
         openOverlay();
         widget.onChanged!(value);
@@ -90,27 +87,10 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
         widget.onChanged!(value);
       },
       onEditingComplete: () => closeOverlay(),
-      autovalidateMode: widget.autovalidateMode,
-      validator: (value) {
-        String? validate = widget.validator!(value);
-        if (validate != null && validate.isNotEmpty) {
-          return '';
-        }
-
-        return null;
-      }
     );
     _textFormField.controller!.text = widget.initialValue ?? '';
     _textFormField.controller!.addListener(() {
       updateSuggestions(_textFormField.controller!.text);
-
-      String? validate = widget.validator!(_textFormField.controller!.text);
-      if (validate != null && validate.isNotEmpty) {
-        setState(() => errorMessage = validate);
-      }
-      else {
-        setState(() => errorMessage = '');
-      }
     });
   }
 
@@ -179,20 +159,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _textFormField,
-            Visibility(
-              visible: errorMessage.isNotEmpty,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  errorMessage,
-                  style: TextStyle(
-                    color: Colors.red[800],
-                    fontSize: 12
-                  )
-                ),
-              )
-            )
+            _textFormField
           ]
         ),
         onFocusChange: (hasFocus) {
