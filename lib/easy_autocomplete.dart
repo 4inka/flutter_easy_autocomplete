@@ -46,6 +46,8 @@ class EasyAutocomplete extends StatefulWidget {
   final String? initialValue;
   /// Can be used to set the text capitalization type
   final TextCapitalization textCapitalization;
+  /// Determines if should gain focus on screen open
+  final bool autofocus;
 
   /// Creates a autocomplete widget to help you manage your suggestions
   EasyAutocomplete({
@@ -55,6 +57,7 @@ class EasyAutocomplete extends StatefulWidget {
     this.onChanged,
     this.inputFormatter = const [],
     this.initialValue,
+    this.autofocus = false,
     this.textCapitalization = TextCapitalization.sentences,
   }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time'),
     assert(!(controller != null && initialValue != null), 'controller and initialValue cannot be used at the same time');
@@ -77,6 +80,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
       decoration: widget.decoration,
       controller: widget.controller ?? TextEditingController(),
       inputFormatters: widget.inputFormatter,
+      autofocus: widget.autofocus,
       textCapitalization: widget.textCapitalization,
       onChanged: (value) {
         openOverlay();
