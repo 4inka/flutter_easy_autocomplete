@@ -11,6 +11,7 @@ A Flutter plugin to handle input autocomplete suggestions
 ## ToDo
 * Add validation functionality
 * Adding asynchronous suggestions fetch
+* Add possibility to show empty message when no suggestion is found
 
 ## Usage
 
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
 | inputFormatter | `List<TextInputFormatter>` | :x: | Can be used to set custom inputFormatters to field |  |
 | initialValue | `String` | :x: | Can be used to set the textfield initial value |  |
 | textCapitalization | `TextCapitalization` | :x: | Can be used to set the text capitalization type | TextCapitalization.sentences |
+| autofocus | `bool` | :x: | Determines if should gain focus on screen open | false |
 
 ## Issues & Suggestions
 If you encounter any issue you or want to leave a suggestion you can do it by filling an [issue](https://github.com/4inka/flutter_easy_autocomplete/issues).
