@@ -48,6 +48,14 @@ class EasyAutocomplete extends StatefulWidget {
   final TextCapitalization textCapitalization;
   /// Determines if should gain focus on screen open
   final bool autofocus;
+  /// Can be used to set different keyboardTypes to your field
+  final TextInputType keyboardType;
+  /// Can be used to set a custom color to the input cursor
+  final Color? cursorColor;
+  /// Can be used to set custom style to the suggestions list text
+  final TextStyle suggestionTextStyle;
+  /// Can be used to set custom background color to suggestions list
+  final Color? suggestionBackgroundColor;
 
   /// Creates a autocomplete widget to help you manage your suggestions
   EasyAutocomplete({
@@ -59,6 +67,10 @@ class EasyAutocomplete extends StatefulWidget {
     this.initialValue,
     this.autofocus = false,
     this.textCapitalization = TextCapitalization.sentences,
+    this.keyboardType = TextInputType.text,
+    this.cursorColor,
+    this.suggestionTextStyle = const TextStyle(),
+    this.suggestionBackgroundColor
   }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time'),
     assert(!(controller != null && initialValue != null), 'controller and initialValue cannot be used at the same time');
 
@@ -82,6 +94,8 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
       inputFormatters: widget.inputFormatter,
       autofocus: widget.autofocus,
       textCapitalization: widget.textCapitalization,
+      keyboardType: widget.keyboardType,
+      cursorColor: widget.cursorColor ?? Colors.blue,
       onChanged: (value) {
         openOverlay();
         widget.onChanged!(value);
@@ -115,6 +129,8 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
             offset: Offset(0.0, size.height + 5.0),
             child: FilterableList(
               items: _suggestions,
+              suggestionTextStyle: widget.suggestionTextStyle,
+              suggestionBackgroundColor: widget.suggestionBackgroundColor,
               onItemTapped: (value) {
                 _textFormField.controller!
                   ..value = TextEditingValue(
