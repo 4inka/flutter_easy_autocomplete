@@ -61,6 +61,74 @@ class MyApp extends StatelessWidget {
 }
 ```
 
+<br/>
+You can customize other aspects of the autocomplete widget such as the suggestions text style, background color and others as shown in example below:
+
+``` dart
+import 'package:easy_autocomplete/easy_autocomplete.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Example')
+          ),
+          body: Container(
+            padding: EdgeInsets.all(10),
+            alignment: Alignment.center,
+            child: EasyAutocomplete(
+              suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brazil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
+              cursorColor: Colors.purple,
+              suggestionBackgroundColor: Colors.purple,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(
+                    color: Colors.purple,
+                    style: BorderStyle.solid
+                  )
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(
+                    color: Colors.purple,
+                    style: BorderStyle.solid
+                  )
+                )
+              ),
+              suggestionTextStyle: TextStyle(
+                color: Colors.white,
+                fontStyle: FontStyle.italic,
+                fontSize: 16
+              ),
+              onChanged: (value) => print(value)
+            )
+          )
+        )
+      )
+    );
+  }
+}
+```
+The above example will generate something like below preview:
+
+![Preview](https://raw.githubusercontent.com/4inka/flutter_easy_autocomplete/main/preview/preview2.gif)
+
+<br/>
+
 ## API
 | Attribute | Type | Required | Description | Default value |
 |:---|:---|:---:|:---|:---|
