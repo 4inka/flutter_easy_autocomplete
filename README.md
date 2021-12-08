@@ -10,7 +10,7 @@ A Flutter plugin to handle input autocomplete suggestions
 
 ## ToDo
 * Add validation functionality
-* Adding asynchronous suggestions fetch
+* Add asynchronous suggestions fetch
 * Add possibility to show empty message when no suggestion is found
 
 ## Usage
@@ -20,7 +20,7 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 ``` yaml
 dependencies:
   ...
-  easy_autocomplete: ^1.0.0
+  easy_autocomplete: ^1.1.0
 ```
 
 You can create a simple autocomplete input widget with the following example:
@@ -66,12 +66,16 @@ class MyApp extends StatelessWidget {
 |:---|:---|:---:|:---|:---|
 | suggestions | `List<String>` | :heavy_check_mark: | The list of suggestions to be displayed |  |
 | controller | `TextEditingController` | :x: | Text editing controller |  |
-| decoration | `InputDecoration` | :x: | Can be used to decorate the input | InputDecoration() |
+| decoration | `InputDecoration` | :x: | Can be used to decorate the input |  |
 | onChanged | `Function(String)` | :x: | Function that handles the changes to the input |  |
 | inputFormatter | `List<TextInputFormatter>` | :x: | Can be used to set custom inputFormatters to field |  |
 | initialValue | `String` | :x: | Can be used to set the textfield initial value |  |
 | textCapitalization | `TextCapitalization` | :x: | Can be used to set the text capitalization type | TextCapitalization.sentences |
 | autofocus | `bool` | :x: | Determines if should gain focus on screen open | false |
+| keyboardType | `TextInputType` | :x: | Can be used to set different keyboardTypes to your field | TextInputType.text |
+| cursorColor | `Color` | :x: | Can be used to set a custom color to the input cursor | Colors.blue |
+| suggestionTextStyle | `TextStyle` | :x: | Can be used to set custom style to the suggestions list text |  |
+| suggestionBackgroundColor | `Color` | :x: | Can be used to set custom background color to suggestions list |  |
 
 ## Issues & Suggestions
 If you encounter any issue you or want to leave a suggestion you can do it by filling an [issue](https://github.com/4inka/flutter_easy_autocomplete/issues).
