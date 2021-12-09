@@ -1,3 +1,8 @@
+## 1.2.1 - [09-12-2021]
+
+### Added
+* Correcting bug in which could not set initial value through controller
+
 ## 1.2.0 - [09-12-2021]
 
 ### Added
