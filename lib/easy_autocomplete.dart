@@ -27,13 +27,17 @@
 
 library easy_autocomplete;
 
+import 'dart:async';
+
 import 'package:easy_autocomplete/widgets/filterable_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class EasyAutocomplete extends StatefulWidget {
   /// The list of suggestions to be displayed
-  final List<String> suggestions;
+  final List<String>? suggestions;
+  /// Fetches list of suggestions from a Future
+  final Future<List<String>> Function(String searchValue)? asyncSuggestions;
   /// Text editing controller
   final TextEditingController? controller;
   /// Can be used to decorate the input
@@ -59,7 +63,8 @@ class EasyAutocomplete extends StatefulWidget {
 
   /// Creates a autocomplete widget to help you manage your suggestions
   EasyAutocomplete({
-    required this.suggestions,
+    this.suggestions,
+    this.asyncSuggestions,
     this.controller,
     this.decoration = const InputDecoration(),
     this.onChanged,
@@ -72,7 +77,8 @@ class EasyAutocomplete extends StatefulWidget {
     this.suggestionTextStyle = const TextStyle(),
     this.suggestionBackgroundColor
   }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time'),
-    assert(!(controller != null && initialValue != null), 'controller and initialValue cannot be used at the same time');
+    assert(!(controller != null && initialValue != null), 'controller and initialValue cannot be used at the same time'),
+    assert(suggestions != null && asyncSuggestions == null || suggestions == null && asyncSuggestions != null, 'suggestions and asyncSuggestions cannot be both null or have values at the same time');
 
   @override
   State<EasyAutocomplete> createState() => _EasyAutocompleteState();
@@ -82,8 +88,11 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   final LayerLink _layerLink = LayerLink();
   late TextFormField _textFormField;
   bool _hasOpenedOverlay = false;
+  bool _isLoading = false;
   OverlayEntry? _overlayEntry;
   List<String> _suggestions = [];
+  Timer? _debounce;
+  String _previousAsyncSearchText = '';
 
   @override
   void initState() {
@@ -128,6 +137,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
             showWhenUnlinked: false,
             offset: Offset(0.0, size.height + 5.0),
             child: FilterableList(
+              loading: _isLoading,
               items: _suggestions,
               suggestionTextStyle: widget.suggestionTextStyle,
               suggestionBackgroundColor: widget.suggestionBackgroundColor,
@@ -160,10 +170,31 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     }
   }
 
-  void updateSuggestions(String input) {
-    _suggestions = widget.suggestions.where((element) {
-      return element.toLowerCase().contains(input.toLowerCase());
-    }).toList();
+  Future<void> updateSuggestions(String input) async {
+    rebuildOverlay();
+    if (widget.suggestions != null) {
+      _suggestions = widget.suggestions!.where((element) {
+        return element.toLowerCase().contains(input.toLowerCase());
+      }).toList();
+      rebuildOverlay();
+    }
+    else if (widget.asyncSuggestions != null) {
+      setState(() => _isLoading = true);
+      if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
+      _debounce = Timer(const Duration(milliseconds: 750), () async {
+        if (_previousAsyncSearchText != input || _previousAsyncSearchText.isEmpty || input.isEmpty) {
+        _suggestions = await widget.asyncSuggestions!(input);
+        setState(() {
+          _isLoading = false;
+          _previousAsyncSearchText = input;
+        });
+        rebuildOverlay();
+        }
+      });
+    }
+  }
+
+  void rebuildOverlay() {
     if(_overlayEntry != null) {
       _overlayEntry!.markNeedsBuild();
     }
@@ -194,6 +225,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   void dispose() {
     if (_overlayEntry != null) _overlayEntry!.dispose();
     if (widget.controller != null) widget.controller!.dispose();
+    if (_debounce != null) _debounce?.cancel();
     super.dispose();
   }
 }
