@@ -13,6 +13,7 @@ A Flutter plugin to handle input autocomplete suggestions
 ## ToDo
 * Add validation functionality
 * Add possibility to show empty message when no suggestion is found
+* Add possibility to customize suggestions list item
 ## Done
 * Add asynchronous suggestions fetch
 
