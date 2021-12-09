@@ -1,3 +1,9 @@
+## 1.2.0 - [09-12-2021]
+
+### Added
+* Parameters to style suggestions textfield text
+* Function to fetch suggestions asynchronously
+
 ## 1.1.0 - [08-12-2021]
 
 ### Added
