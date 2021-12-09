@@ -78,7 +78,7 @@ class EasyAutocomplete extends StatefulWidget {
     this.cursorColor,
     this.suggestionTextStyle = const TextStyle(),
     this.suggestionBackgroundColor,
-    this.debounceDuration = const Duration(milliseconds: 500)
+    this.debounceDuration = const Duration(milliseconds: 400)
   }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time'),
     assert(!(controller != null && initialValue != null), 'controller and initialValue cannot be used at the same time'),
     assert(suggestions != null && asyncSuggestions == null || suggestions == null && asyncSuggestions != null, 'suggestions and asyncSuggestions cannot be both null or have values at the same time');
