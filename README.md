@@ -199,6 +199,7 @@ The above example will generate something like below preview:
 | autofocus | `bool` | :x: | Determines if should gain focus on screen open | false |
 | keyboardType | `TextInputType` | :x: | Can be used to set different keyboardTypes to your field | TextInputType.text |
 | cursorColor | `Color` | :x: | Can be used to set a custom color to the input cursor | Colors.blue |
+| inputTextStyle | `TextStyle` | :x: | Can be used to set custom style to the suggestions textfield |  |
 | suggestionTextStyle | `TextStyle` | :x: | Can be used to set custom style to the suggestions list text |  |
 | suggestionBackgroundColor | `Color` | :x: | Can be used to set custom background color to suggestions list |  |
 | debounceDuration | `Duration` | :x: | Used to set the debounce time for async data fetch | Duration(milliseconds: 400) |
