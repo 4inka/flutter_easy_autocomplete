@@ -8,7 +8,7 @@
 A Flutter plugin to handle input autocomplete suggestions
 
 ## Preview
-![Preview](https://raw.githubusercontent.com/4inka/flutter_easy_autocomplete/main/preview/preview.gif)
+![Preview](https://raw.githubusercontent.com/4inka/flutter_easy_autocomplete/main/preview/preview1.gif)
 
 ## ToDo
 * Add validation functionality
