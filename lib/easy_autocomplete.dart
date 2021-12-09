@@ -56,6 +56,8 @@ class EasyAutocomplete extends StatefulWidget {
   final TextInputType keyboardType;
   /// Can be used to set a custom color to the input cursor
   final Color? cursorColor;
+  /// Can be used to set custom style to the suggestions textfield
+  final TextStyle inputTextStyle;
   /// Can be used to set custom style to the suggestions list text
   final TextStyle suggestionTextStyle;
   /// Can be used to set custom background color to suggestions list
@@ -76,6 +78,7 @@ class EasyAutocomplete extends StatefulWidget {
     this.textCapitalization = TextCapitalization.sentences,
     this.keyboardType = TextInputType.text,
     this.cursorColor,
+    this.inputTextStyle = const TextStyle(),
     this.suggestionTextStyle = const TextStyle(),
     this.suggestionBackgroundColor,
     this.debounceDuration = const Duration(milliseconds: 400)
@@ -108,6 +111,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
       textCapitalization: widget.textCapitalization,
       keyboardType: widget.keyboardType,
       cursorColor: widget.cursorColor ?? Colors.blue,
+      style: widget.inputTextStyle,
       onChanged: (value) {
         openOverlay();
         widget.onChanged!(value);
