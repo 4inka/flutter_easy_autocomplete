@@ -60,6 +60,8 @@ class EasyAutocomplete extends StatefulWidget {
   final TextStyle suggestionTextStyle;
   /// Can be used to set custom background color to suggestions list
   final Color? suggestionBackgroundColor;
+  /// Used to set the debounce time for async data fetch
+  final Duration debounceDuration;
 
   /// Creates a autocomplete widget to help you manage your suggestions
   EasyAutocomplete({
@@ -75,7 +77,8 @@ class EasyAutocomplete extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.cursorColor,
     this.suggestionTextStyle = const TextStyle(),
-    this.suggestionBackgroundColor
+    this.suggestionBackgroundColor,
+    this.debounceDuration = const Duration(milliseconds: 500)
   }) : assert(onChanged != null || controller != null, 'onChanged and controller parameters cannot be both null at the same time'),
     assert(!(controller != null && initialValue != null), 'controller and initialValue cannot be used at the same time'),
     assert(suggestions != null && asyncSuggestions == null || suggestions == null && asyncSuggestions != null, 'suggestions and asyncSuggestions cannot be both null or have values at the same time');
@@ -181,7 +184,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     else if (widget.asyncSuggestions != null) {
       setState(() => _isLoading = true);
       if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
-      _debounce = Timer(const Duration(milliseconds: 750), () async {
+      _debounce = Timer(widget.debounceDuration, () async {
         if (_previousAsyncSearchText != input || _previousAsyncSearchText.isEmpty || input.isEmpty) {
         _suggestions = await widget.asyncSuggestions!(input);
         setState(() {
