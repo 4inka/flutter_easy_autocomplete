@@ -122,7 +122,9 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
       },
       onEditingComplete: () => closeOverlay(),
     );
+    if (widget.controller == null) {
     _textFormField.controller!.text = widget.initialValue ?? '';
+    }
     _textFormField.controller!.addListener(() {
       updateSuggestions(_textFormField.controller!.text);
     });
