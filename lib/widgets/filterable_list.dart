@@ -34,6 +34,7 @@ class FilterableList extends StatelessWidget {
   final double maxListHeight;
   final TextStyle suggestionTextStyle;
   final Color? suggestionBackgroundColor;
+  final bool loading;
 
   FilterableList({
     required this.items,
@@ -41,7 +42,8 @@ class FilterableList extends StatelessWidget {
     this.elevation = 5,
     this.maxListHeight = 150,
     this.suggestionTextStyle = const TextStyle(),
-    this.suggestionBackgroundColor
+    this.suggestionBackgroundColor,
+    this.loading = false
   });
 
   @override
@@ -53,12 +55,20 @@ class FilterableList extends StatelessWidget {
           maxHeight: maxListHeight
         ),
         child: Visibility(
-          visible: items.isNotEmpty,
+          visible: items.isNotEmpty || loading,
           child: ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            itemCount: items.length,
+            itemCount: loading ? 1 : items.length,
             itemBuilder: (context, index) {
+              if (loading) {
+                return Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(10),
+                  child: CircularProgressIndicator()
+                );
+              }
+
               return Material(
                 color: suggestionBackgroundColor ?? Colors.transparent,
                 child: InkWell(
