@@ -1,6 +1,8 @@
 # Easy Autocomplete
 
-<a href="https://www.buymeacoffee.com/4inka" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="Buy Me A Pizza" style="height: 60px !important; width: 217px !important;" ></a>
+<a href="https://www.buymeacoffee.com/4inka" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="Buy Me A Pizza" style="height: 60px !important; width: 217px !important;"/>
+</a>
 
 
 A Flutter plugin to handle input autocomplete suggestions
@@ -199,6 +201,7 @@ The above example will generate something like below preview:
 | cursorColor | `Color` | :x: | Can be used to set a custom color to the input cursor | Colors.blue |
 | suggestionTextStyle | `TextStyle` | :x: | Can be used to set custom style to the suggestions list text |  |
 | suggestionBackgroundColor | `Color` | :x: | Can be used to set custom background color to suggestions list |  |
+| debounceDuration | `Duration` | :x: | Used to set the debounce time for async data fetch | Duration(milliseconds: 400) |
 
 ## Issues & Suggestions
 If you encounter any issue you or want to leave a suggestion you can do it by filling an [issue](https://github.com/4inka/flutter_easy_autocomplete/issues).
