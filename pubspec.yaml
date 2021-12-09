@@ -1,6 +1,6 @@
 name: easy_autocomplete
 description: A simple but flexible autocomplete TextFormField to help you display suggestions to your users while typing
-version: 1.1.0
+version: 1.2.0
 homepage: https://github.com/4inka/flutter_easy_autocomplete
 
 environment:
