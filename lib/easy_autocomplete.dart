@@ -233,7 +233,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   @override
   void dispose() {
     if (_overlayEntry != null) _overlayEntry!.dispose();
-    if (widget.controller != null) widget.controller!.dispose();
+    if (widget.controller == null) _textFormField.controller!.dispose();
     if (_debounce != null) _debounce?.cancel();
     super.dispose();
   }
