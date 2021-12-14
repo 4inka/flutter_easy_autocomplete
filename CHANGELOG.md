@@ -1,6 +1,11 @@
+## 1.2.2 - [14-12-2021]
+
+### Fixed
+* Correcting bug in which disposing controller would generate error
+
 ## 1.2.1 - [09-12-2021]
 
-### Added
+### Fixed
 * Correcting bug in which could not set initial value through controller
 
 ## 1.2.0 - [09-12-2021]
