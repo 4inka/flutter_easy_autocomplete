@@ -64,11 +64,14 @@ class EasyAutocomplete extends StatefulWidget {
   final Color? suggestionBackgroundColor;
   /// Used to set the debounce time for async data fetch
   final Duration debounceDuration;
+  /// Can be used to customize suggestion items
+  final Widget Function(String data)? suggestionBuilder; 
 
   /// Creates a autocomplete widget to help you manage your suggestions
   EasyAutocomplete({
     this.suggestions,
     this.asyncSuggestions,
+    this.suggestionBuilder,
     this.controller,
     this.decoration = const InputDecoration(),
     this.onChanged,
@@ -147,6 +150,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
             offset: Offset(0.0, size.height + 5.0),
             child: FilterableList(
               loading: _isLoading,
+              suggestionBuilder: widget.suggestionBuilder,
               items: _suggestions,
               suggestionTextStyle: widget.suggestionTextStyle,
               suggestionBackgroundColor: widget.suggestionBackgroundColor,
