@@ -4,30 +4,44 @@
   <img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="Buy Me A Pizza" style="height: 60px !important; width: 217px !important;"/>
 </a>
 
-
 A Flutter plugin to handle input autocomplete suggestions
 
 ## Preview
 ![Preview](https://raw.githubusercontent.com/4inka/flutter_easy_autocomplete/main/preview/preview1.gif)
 
+# Table of contents
+
+- [Easy Autocomplete](#easy-autocomplete)
+  - [Preview](#preview)
+- [Table of contents](#table-of-contents)
+  - [ToDo](#todo)
+  - [Done](#done)
+  - [Installation](#installation)
+  - [Basic example](#basic-example)
+  - [Example with customized style](#example-with-customized-style)
+  - [Example with asynchronous data fetch](#example-with-asynchronous-data-fetch)
+  - [API](#api)
+  - [Issues & Suggestions](#issues--suggestions)
+    - [Thank you for the support!](#thank-you-for-the-support)
+
 ## ToDo
 * Add validation functionality
 * Add possibility to show empty message when no suggestion is found
-* Add possibility to customize suggestions list item
 ## Done
 * Add asynchronous suggestions fetch
+* Add possibility to customize suggestions list item
 
-## Usage
+## Installation
 
 In the `pubspec.yaml` of your flutter project, add the following dependency:
 
 ``` yaml
 dependencies:
   ...
-  easy_autocomplete: ^1.2.2
+  easy_autocomplete: ^1.3.0
 ```
 
-### Basic example
+## Basic example
 
 You can create a simple autocomplete input widget as shown in first preview with the following example:
 
@@ -67,7 +81,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-### Example with customized style
+## Example with customized style
 
 You can customize other aspects of the autocomplete widget such as the suggestions text style, background color and others as shown in example below:
 
@@ -116,11 +130,22 @@ class MyApp extends StatelessWidget {
                   )
                 )
               ),
-              suggestionTextStyle: TextStyle(
-                color: Colors.white,
-                fontStyle: FontStyle.italic,
-                fontSize: 16
-              ),
+              suggestionBuilder: (data) {
+                return Container(
+                  margin: EdgeInsets.all(1),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.purple,
+                    borderRadius: BorderRadius.circular(5)
+                  ),
+                  child: Text(
+                    data,
+                    style: TextStyle(
+                      color: Colors.white
+                    )
+                  )
+                );
+              }
               onChanged: (value) => print(value)
             )
           )
@@ -134,7 +159,7 @@ The above example will generate something like below preview:
 
 ![Preview](https://raw.githubusercontent.com/4inka/flutter_easy_autocomplete/main/preview/preview2.gif)
 
-### Example with asynchronous data fetch
+## Example with asynchronous data fetch
 
 To create a autocomplete field that fetches data asynchronously you will need to use `asyncSuggestions` instead of `suggestions`
 ``` dart
@@ -204,6 +229,7 @@ The above example will generate something like below preview:
 | suggestionTextStyle | `TextStyle` | :x: | Can be used to set custom style to the suggestions list text |  |
 | suggestionBackgroundColor | `Color` | :x: | Can be used to set custom background color to suggestions list |  |
 | debounceDuration | `Duration` | :x: | Used to set the debounce time for async data fetch | Duration(milliseconds: 400) |
+| suggestionBuilder | `Widget Function(String data)` | :x: | Can be used to customize suggestion items |  |
 
 ## Issues & Suggestions
 If you encounter any issue you or want to leave a suggestion you can do it by filling an [issue](https://github.com/4inka/flutter_easy_autocomplete/issues).
