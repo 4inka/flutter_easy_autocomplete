@@ -1,3 +1,8 @@
+## 1.3.0 - [17-12-2021]
+
+### Added
+* Added the `suggestionBuilder` parameter that can be used to customize suggestion items
+
 ## 1.2.2 - [14-12-2021]
 
 ### Fixed
