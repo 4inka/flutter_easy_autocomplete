@@ -6,13 +6,13 @@
 
 A Flutter plugin to handle input autocomplete suggestions
 
-## Preview
+# Preview
 ![Preview](https://raw.githubusercontent.com/4inka/flutter_easy_autocomplete/main/preview/preview1.gif)
 
 # Table of contents
 
 - [Easy Autocomplete](#easy-autocomplete)
-  - [Preview](#preview)
+- [Preview](#preview)
 - [Table of contents](#table-of-contents)
   - [ToDo](#todo)
   - [Done](#done)
@@ -112,7 +112,6 @@ class MyApp extends StatelessWidget {
             child: EasyAutocomplete(
               suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brazil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
               cursorColor: Colors.purple,
-              suggestionBackgroundColor: Colors.purple,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                 focusedBorder: OutlineInputBorder(
