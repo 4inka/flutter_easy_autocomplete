@@ -72,7 +72,10 @@ class FilterableList extends StatelessWidget {
               }
 
               if (suggestionBuilder != null) {
-                return suggestionBuilder!(items[index]);
+                return InkWell(
+                  child: suggestionBuilder!(items[index]),
+                  onTap: () => onItemTapped(items[index])
+                );
               }
 
               return Material(
