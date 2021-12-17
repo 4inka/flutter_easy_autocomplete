@@ -52,6 +52,7 @@ class FilterableList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 5,
+      borderRadius: BorderRadius.circular(5),
       child: Container(
         constraints: BoxConstraints(
           maxHeight: maxListHeight
