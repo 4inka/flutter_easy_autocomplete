@@ -53,7 +53,7 @@ class FilterableList extends StatelessWidget {
     return Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(5),
-      color: suggestionBackgroundColor ?? Colors.transparent,
+      color: suggestionBackgroundColor ?? Colors.white,
       child: Container(
         constraints: BoxConstraints(
           maxHeight: maxListHeight
