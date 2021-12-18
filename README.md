@@ -11,18 +11,14 @@ A Flutter plugin to handle input autocomplete suggestions
 
 # Table of contents
 
-- [Easy Autocomplete](#easy-autocomplete)
-- [Preview](#preview)
-- [Table of contents](#table-of-contents)
-  - [ToDo](#todo)
-  - [Done](#done)
-  - [Installation](#installation)
-  - [Basic example](#basic-example)
-  - [Example with customized style](#example-with-customized-style)
-  - [Example with asynchronous data fetch](#example-with-asynchronous-data-fetch)
-  - [API](#api)
-  - [Issues & Suggestions](#issues--suggestions)
-    - [Thank you for the support!](#thank-you-for-the-support)
+* [ToDo](#todo)
+* [Done](#done)
+* [Installation](#installation)
+* [Basic example](#basic-example)
+* [Example with customized style](#example-with-customized-style)
+* [Example with asynchronous data fetch](#example-with-asynchronous-data-fetch)
+* [API](#api)
+* [Issues & Suggestions](#issues--suggestions)
 
 ## ToDo
 * Add validation functionality
