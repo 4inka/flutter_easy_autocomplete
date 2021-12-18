@@ -37,7 +37,7 @@ class FilterableList extends StatelessWidget {
   final bool loading;
   final Widget Function(String data)? suggestionBuilder; 
 
-  FilterableList({
+  const FilterableList({
     required this.items,
     required this.onItemTapped,
     this.suggestionBuilder,

@@ -68,7 +68,7 @@ class EasyAutocomplete extends StatefulWidget {
   final Widget Function(String data)? suggestionBuilder; 
 
   /// Creates a autocomplete widget to help you manage your suggestions
-  EasyAutocomplete({
+  const EasyAutocomplete({
     this.suggestions,
     this.asyncSuggestions,
     this.suggestionBuilder,
