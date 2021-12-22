@@ -1,3 +1,8 @@
+## 1.3.1 - [22-12-2021]
+
+### Fixed
+* Correcting default suggestions background color
+
 ## 1.3.0 - [18-12-2021]
 
 ### Added
