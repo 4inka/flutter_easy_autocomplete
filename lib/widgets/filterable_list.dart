@@ -81,6 +81,7 @@ class FilterableList extends StatelessWidget {
               }
 
               return Material(
+                color: Colors.transparent,
                 child: InkWell(
                   child: Container(
                     width: double.infinity,
