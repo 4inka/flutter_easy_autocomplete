@@ -1,3 +1,8 @@
+## 1.4.0 - [07-01-2022]
+
+### Changed
+* Improving default suggestions list background color to ajust to different background colors depending on light, dark theme and different scaffold colors
+
 ## 1.3.1 - [22-12-2021]
 
 ### Fixed
