@@ -95,7 +95,7 @@ class EasyAutocomplete extends StatefulWidget {
 
 class _EasyAutocompleteState extends State<EasyAutocomplete> {
   final LayerLink _layerLink = LayerLink();
-  late TextFormField _textFormField;
+  late TextEditingController _controller;
   bool _hasOpenedOverlay = false;
   bool _isLoading = false;
   OverlayEntry? _overlayEntry;
@@ -106,31 +106,8 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   @override
   void initState() {
     super.initState();
-    _textFormField = TextFormField(
-      decoration: widget.decoration,
-      controller: widget.controller ?? TextEditingController(),
-      inputFormatters: widget.inputFormatter,
-      autofocus: widget.autofocus,
-      textCapitalization: widget.textCapitalization,
-      keyboardType: widget.keyboardType,
-      cursorColor: widget.cursorColor ?? Colors.blue,
-      style: widget.inputTextStyle,
-      onChanged: (value) {
-        openOverlay();
-        widget.onChanged!(value);
-      },
-      onFieldSubmitted: (value) {
-        closeOverlay();
-        widget.onChanged!(value);
-      },
-      onEditingComplete: () => closeOverlay(),
-    );
-    if (widget.controller == null) {
-    _textFormField.controller!.text = widget.initialValue ?? '';
-    }
-    _textFormField.controller!.addListener(() {
-      updateSuggestions(_textFormField.controller!.text);
-    });
+    _controller = widget.controller ?? TextEditingController(text: widget.initialValue ?? '');
+    _controller.addListener(() => updateSuggestions(_controller.text) );
   }
 
   void openOverlay() {
@@ -155,7 +132,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
               suggestionTextStyle: widget.suggestionTextStyle,
               suggestionBackgroundColor: widget.suggestionBackgroundColor,
               onItemTapped: (value) {
-                _textFormField.controller!
+                _controller
                   ..value = TextEditingValue(
                     text: value,
                     selection: TextSelection.collapsed(
@@ -223,7 +200,25 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _textFormField
+            TextFormField(
+              decoration: widget.decoration,
+              controller: _controller,
+              inputFormatters: widget.inputFormatter,
+              autofocus: widget.autofocus,
+              textCapitalization: widget.textCapitalization,
+              keyboardType: widget.keyboardType,
+              cursorColor: widget.cursorColor ?? Colors.blue,
+              style: widget.inputTextStyle,
+              onChanged: (value) {
+                openOverlay();
+                widget.onChanged!(value);
+              },
+              onFieldSubmitted: (value) {
+                closeOverlay();
+                widget.onChanged!(value);
+              },
+              onEditingComplete: () => closeOverlay()
+            )
           ]
         ),
         onFocusChange: (hasFocus) {
@@ -237,7 +232,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   @override
   void dispose() {
     if (_overlayEntry != null) _overlayEntry!.dispose();
-    if (widget.controller == null) _textFormField.controller!.dispose();
+    if (widget.controller == null) _controller.dispose();
     if (_debounce != null) _debounce?.cancel();
     super.dispose();
   }

@@ -1,3 +1,8 @@
+## 1.4.1 - [11-01-2022]
+
+### Fixed
+* Correcting bug in which couldn't apply changes to TextField using setState
+
 ## 1.4.0 - [07-01-2022]
 
 ### Changed
