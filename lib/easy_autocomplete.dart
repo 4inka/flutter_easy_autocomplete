@@ -141,6 +141,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   );
                 widget.onChanged!(value);
                 closeOverlay();
+                FocusScope.of(context).requestFocus(FocusNode());
               }
             )
           )
@@ -216,6 +217,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
               onFieldSubmitted: (value) {
                 closeOverlay();
                 widget.onChanged!(value);
+                FocusScope.of(context).requestFocus(FocusNode());
               },
               onEditingComplete: () => closeOverlay()
             )
