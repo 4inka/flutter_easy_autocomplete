@@ -1,3 +1,8 @@
+## 1.4.2 - [13-01-2022]
+
+### Fixed
+* Correcting bug in which keyboard wouldn't close when pressing enter on keyboard
+
 ## 1.4.1 - [11-01-2022]
 
 ### Fixed
