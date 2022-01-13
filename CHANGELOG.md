@@ -1,5 +1,8 @@
 ## 1.4.2 - [13-01-2022]
 
+### Added
+* Added `focusNode` parameter
+
 ### Fixed
 * Correcting bug in which keyboard wouldn't close when pressing enter on keyboard
 
