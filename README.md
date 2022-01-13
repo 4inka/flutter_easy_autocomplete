@@ -218,6 +218,7 @@ The above example will generate something like below preview:
 | initialValue | `String` | :x: | Can be used to set the textfield initial value |  |
 | textCapitalization | `TextCapitalization` | :x: | Can be used to set the text capitalization type | TextCapitalization.sentences |
 | autofocus | `bool` | :x: | Determines if should gain focus on screen open | false |
+| focusNode | `FocusNode` | :x: | Can be used to manage TextField focus |  |
 | keyboardType | `TextInputType` | :x: | Can be used to set different keyboardTypes to your field | TextInputType.text |
 | cursorColor | `Color` | :x: | Can be used to set a custom color to the input cursor | Colors.blue |
 | inputTextStyle | `TextStyle` | :x: | Can be used to set custom style to the suggestions textfield |  |
