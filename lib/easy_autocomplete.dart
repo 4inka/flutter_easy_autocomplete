@@ -54,6 +54,8 @@ class EasyAutocomplete extends StatefulWidget {
   final bool autofocus;
   /// Can be used to set different keyboardTypes to your field
   final TextInputType keyboardType;
+  /// Can be used to manage TextField focus
+  final FocusNode? focusNode;
   /// Can be used to set a custom color to the input cursor
   final Color? cursorColor;
   /// Can be used to set custom style to the suggestions textfield
@@ -80,6 +82,7 @@ class EasyAutocomplete extends StatefulWidget {
     this.autofocus = false,
     this.textCapitalization = TextCapitalization.sentences,
     this.keyboardType = TextInputType.text,
+    this.focusNode,
     this.cursorColor,
     this.inputTextStyle = const TextStyle(),
     this.suggestionTextStyle = const TextStyle(),
@@ -102,12 +105,18 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   List<String> _suggestions = [];
   Timer? _debounce;
   String _previousAsyncSearchText = '';
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
     _controller = widget.controller ?? TextEditingController(text: widget.initialValue ?? '');
     _controller.addListener(() => updateSuggestions(_controller.text) );
+    _focusNode.addListener(() {
+      if(_focusNode.hasFocus) openOverlay();
+      else closeOverlay();
+    });
   }
 
   void openOverlay() {
@@ -141,7 +150,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   );
                 widget.onChanged!(value);
                 closeOverlay();
-                FocusScope.of(context).requestFocus(FocusNode());
+                _focusNode.unfocus();
               }
             )
           )
@@ -195,38 +204,30 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: _layerLink,
-      child: Focus(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              decoration: widget.decoration,
-              controller: _controller,
-              inputFormatters: widget.inputFormatter,
-              autofocus: widget.autofocus,
-              textCapitalization: widget.textCapitalization,
-              keyboardType: widget.keyboardType,
-              cursorColor: widget.cursorColor ?? Colors.blue,
-              style: widget.inputTextStyle,
-              onChanged: (value) {
-                openOverlay();
-                widget.onChanged!(value);
-              },
-              onFieldSubmitted: (value) {
-                closeOverlay();
-                widget.onChanged!(value);
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              onEditingComplete: () => closeOverlay()
-            )
-          ]
-        ),
-        onFocusChange: (hasFocus) {
-          if(hasFocus) openOverlay();
-          else closeOverlay();
-        }
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            decoration: widget.decoration,
+            controller: _controller,
+            inputFormatters: widget.inputFormatter,
+            autofocus: widget.autofocus,
+            focusNode: _focusNode,
+            textCapitalization: widget.textCapitalization,
+            keyboardType: widget.keyboardType,
+            cursorColor: widget.cursorColor ?? Colors.blue,
+            style: widget.inputTextStyle,
+            onChanged: (value) => widget.onChanged!(value),
+            onFieldSubmitted: (value) {
+              closeOverlay();
+              widget.onChanged!(value);
+              _focusNode.unfocus();
+            },
+            onEditingComplete: () => closeOverlay()
+          )
+        ]
       )
     );
   }
@@ -234,8 +235,18 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   @override
   void dispose() {
     if (_overlayEntry != null) _overlayEntry!.dispose();
-    if (widget.controller == null) _controller.dispose();
+    if (widget.controller == null) {
+      _controller.removeListener(() => updateSuggestions(_controller.text) );
+      _controller.dispose();
+    }
     if (_debounce != null) _debounce?.cancel();
+    if (widget.focusNode == null) {
+      _focusNode.removeListener(() {
+        if(_focusNode.hasFocus) openOverlay();
+        else closeOverlay();
+      });
+      _focusNode.dispose();
+    }
     super.dispose();
   }
 }
