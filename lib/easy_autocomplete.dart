@@ -49,6 +49,9 @@ class EasyAutocomplete extends StatefulWidget {
   /// Function that handles the changes to the input
   final Function(String)? onChanged;
 
+  /// Function that handles the submission of the input
+  final Function(String)? onSubmitted;
+
   /// Can be used to set custom inputFormatters to field
   final List<TextInputFormatter> inputFormatter;
 
@@ -93,6 +96,7 @@ class EasyAutocomplete extends StatefulWidget {
       this.controller,
       this.decoration = const InputDecoration(),
       this.onChanged,
+      this.onSubmitted,
       this.inputFormatter = const [],
       this.initialValue,
       this.autofocus = false,
@@ -242,7 +246,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   onChanged: (value) => widget.onChanged!(value),
                   onFieldSubmitted: (value) {
                     closeOverlay();
-                    widget.onChanged!(value);
+                    widget.onSubmitted!(value);
                     _focusNode.unfocus();
                   },
                   onEditingComplete: () => closeOverlay())
