@@ -246,7 +246,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   onChanged: (value) => widget.onChanged!(value),
                   onFieldSubmitted: (value) {
                     closeOverlay();
-                    widget.onSubmitted!(value);
+                    widget.onSubmitted?.call(value);
                     _focusNode.unfocus();
                   },
                   onEditingComplete: () => closeOverlay())
