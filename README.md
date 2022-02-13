@@ -34,7 +34,7 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 ``` yaml
 dependencies:
   ...
-  easy_autocomplete: ^1.4.2
+  easy_autocomplete: ^1.5.0
 ```
 
 ## Basic example
@@ -229,5 +229,9 @@ The above example will generate something like below preview:
 
 ## Issues & Suggestions
 If you encounter any issue you or want to leave a suggestion you can do it by filling an [issue](https://github.com/4inka/flutter_easy_autocomplete/issues).
+
+## Contributions
+Here's the list of our awesome contributors:
+- [Prateek Sunal](https://github.com/prateekmedia)
 
 ### Thank you for the support!
