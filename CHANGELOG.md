@@ -1,3 +1,11 @@
+## Unreleased - [11-02-2022]
+
+### Added
+* Added `onSubmitted` parameter
+
+### Changed
+* Formatted dart files
+ 
 ## 1.4.2 - [13-01-2022]
 
 ### Added
