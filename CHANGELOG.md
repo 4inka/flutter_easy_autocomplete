@@ -1,4 +1,4 @@
-## Unreleased - [11-02-2022]
+## 1.5.0 - [13-02-2022]
 
 ### Added
 * Added `onSubmitted` parameter
