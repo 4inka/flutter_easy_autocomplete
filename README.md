@@ -67,7 +67,8 @@ class MyApp extends StatelessWidget {
             alignment: Alignment.center,
             child: EasyAutocomplete(
               suggestions: ['Afeganistan', 'Albania', 'Algeria', 'Australia', 'Brazil', 'German', 'Madagascar', 'Mozambique', 'Portugal', 'Zambia'],
-              onChanged: (value) => print(value)
+              onChanged: (value) => print('onChanged value: $value'),
+              onSubmitted: (value) => print('onSubmitted value: $value')
             )
           )
         )
