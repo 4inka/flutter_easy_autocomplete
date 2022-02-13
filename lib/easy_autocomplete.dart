@@ -175,7 +175,8 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                               text: value,
                               selection: TextSelection.collapsed(
                                   offset: value.length));
-                        widget.onChanged!(value);
+                        widget.onChanged?.call(value);
+                        widget.onSubmitted?.call(value);
                         closeOverlay();
                         _focusNode.unfocus();
                       }))));
@@ -243,10 +244,10 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   keyboardType: widget.keyboardType,
                   cursorColor: widget.cursorColor ?? Colors.blue,
                   style: widget.inputTextStyle,
-                  onChanged: (value) => widget.onChanged!(value),
+                  onChanged: (value) => widget.onChanged?.call(value),
                   onFieldSubmitted: (value) {
-                    closeOverlay();
                     widget.onSubmitted?.call(value);
+                    closeOverlay();
                     _focusNode.unfocus();
                   },
                   onEditingComplete: () => closeOverlay())
