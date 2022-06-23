@@ -1,7 +1,7 @@
 # Easy Autocomplete
 
 <a href="https://www.buymeacoffee.com/4inka" target="_blank">
-  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="Buy Me A Pizza" style="height: 60px !important; width: 217px !important;"/>
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="Buy Me A Pizza" style="max-width: 160px;"/>
 </a>
 
 A Flutter plugin to handle input autocomplete suggestions
