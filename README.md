@@ -236,6 +236,5 @@ If you encounter any issue you or want to leave a suggestion you can do it by fi
 ## Contributions
 Here's the list of our awesome contributors:
 - [Prateek Sunal](https://github.com/prateekmedia)
-- [Miklos Zsido](https://github.com/zsmiklos)
 
 ### Thank you for the support!
