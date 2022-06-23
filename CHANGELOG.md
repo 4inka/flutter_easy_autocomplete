@@ -1,3 +1,9 @@
+## 1.6.0 - [23-06-2022]
+
+### Added
+* Added `validator` parameter. Now you can validate the autocomplete field inside a form
+* Added `progressIndicatorBuilder` parameter. Now you can add a custom progress indicator to be used in async suggestions fetch
+
 ## 1.5.0 - [13-02-2022]
 
 ### Added

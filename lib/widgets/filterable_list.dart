@@ -36,6 +36,7 @@ class FilterableList extends StatelessWidget {
   final Color? suggestionBackgroundColor;
   final bool loading;
   final Widget Function(String data)? suggestionBuilder;
+  final Widget? progressIndicatorBuilder;
 
   const FilterableList(
       {required this.items,
@@ -45,7 +46,8 @@ class FilterableList extends StatelessWidget {
       this.maxListHeight = 150,
       this.suggestionTextStyle = const TextStyle(),
       this.suggestionBackgroundColor,
-      this.loading = false});
+      this.loading = false,
+      this.progressIndicatorBuilder});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,12 @@ class FilterableList extends StatelessWidget {
                 return Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10),
-                    child: CircularProgressIndicator());
+                    child: Visibility(
+                      visible: progressIndicatorBuilder != null,
+                      child: progressIndicatorBuilder!,
+                      replacement: CircularProgressIndicator()
+                    )
+                );
               }
 
               if (suggestionBuilder != null) {

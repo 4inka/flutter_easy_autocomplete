@@ -88,11 +88,18 @@ class EasyAutocomplete extends StatefulWidget {
   /// Can be used to customize suggestion items
   final Widget Function(String data)? suggestionBuilder;
 
+  /// Can be used to display custom progress idnicator
+  final Widget? progressIndicatorBuilder;
+
+  /// Can be used to validate field value
+  final String? Function(String?)? validator;
+
   /// Creates a autocomplete widget to help you manage your suggestions
   const EasyAutocomplete(
       {this.suggestions,
       this.asyncSuggestions,
       this.suggestionBuilder,
+      this.progressIndicatorBuilder,
       this.controller,
       this.decoration = const InputDecoration(),
       this.onChanged,
@@ -107,7 +114,8 @@ class EasyAutocomplete extends StatefulWidget {
       this.inputTextStyle = const TextStyle(),
       this.suggestionTextStyle = const TextStyle(),
       this.suggestionBackgroundColor,
-      this.debounceDuration = const Duration(milliseconds: 400)})
+      this.debounceDuration = const Duration(milliseconds: 400),
+      this.validator})
       : assert(onChanged != null || controller != null,
             'onChanged and controller parameters cannot be both null at the same time'),
         assert(!(controller != null && initialValue != null),
@@ -165,6 +173,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   child: FilterableList(
                       loading: _isLoading,
                       suggestionBuilder: widget.suggestionBuilder,
+                      progressIndicatorBuilder: widget.progressIndicatorBuilder,
                       items: _suggestions,
                       suggestionTextStyle: widget.suggestionTextStyle,
                       suggestionBackgroundColor:
@@ -250,7 +259,11 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                     closeOverlay();
                     _focusNode.unfocus();
                   },
-                  onEditingComplete: () => closeOverlay())
+                  onEditingComplete: () => closeOverlay(),
+                  validator: widget.validator != null
+                      ? (value) => widget.validator!(value)
+                      : null // (value) {}
+                  )
             ]));
   }
 
