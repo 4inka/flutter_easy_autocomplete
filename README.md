@@ -213,6 +213,7 @@ The above example will generate something like below preview:
 | suggestions | `List<String>` | :x: | The list of suggestions to be displayed |  |
 | asyncSuggestions | `Future<List<String>> Function(String)` | :x: | Fetches list of suggestions from a Future |  |
 | controller | `TextEditingController` | :x: | Text editing controller |  |
+| validator | `String Function(String?)` | :x: | Validate the autocomplete field value |  |
 | decoration | `InputDecoration` | :x: | Can be used to decorate the input |  |
 | onChanged | `Function(String)` | :x: | Function that handles the changes to the input |  |
 | inputFormatter | `List<TextInputFormatter>` | :x: | Can be used to set custom inputFormatters to field |  |
@@ -226,7 +227,8 @@ The above example will generate something like below preview:
 | suggestionTextStyle | `TextStyle` | :x: | Can be used to set custom style to the suggestions list text |  |
 | suggestionBackgroundColor | `Color` | :x: | Can be used to set custom background color to suggestions list |  |
 | debounceDuration | `Duration` | :x: | Used to set the debounce time for async data fetch | Duration(milliseconds: 400) |
-| suggestionBuilder | `Widget Function(String data)` | :x: | Can be used to customize suggestion items |  |
+| suggestionBuilder | `Widget Function(String)` | :x: | Can be used to customize suggestion items |  |
+| progressIndicatorBuilder | `Widget` | :x: | Can be used to display custom progress idnicator |  |
 
 ## Issues & Suggestions
 If you encounter any issue you or want to leave a suggestion you can do it by filling an [issue](https://github.com/4inka/flutter_easy_autocomplete/issues).
