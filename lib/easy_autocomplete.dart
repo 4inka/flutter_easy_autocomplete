@@ -199,7 +199,10 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   void closeOverlay() {
     if (_hasOpenedOverlay) {
       _overlayEntry!.remove();
-      setState(() => _hasOpenedOverlay = false);
+      setState(() {
+        _previousAsyncSearchText = '';
+        _hasOpenedOverlay = false;
+      });
     }
   }
 
