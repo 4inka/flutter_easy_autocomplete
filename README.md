@@ -34,7 +34,7 @@ In the `pubspec.yaml` of your flutter project, add the following dependency:
 ``` yaml
 dependencies:
   ...
-  easy_autocomplete: ^1.5.0
+  easy_autocomplete: ^1.6.0
 ```
 
 ## Basic example
