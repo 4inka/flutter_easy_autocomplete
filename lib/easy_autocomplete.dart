@@ -30,6 +30,7 @@ library easy_autocomplete;
 import 'dart:async';
 
 import 'package:easy_autocomplete/widgets/filterable_list.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -150,6 +151,10 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     _focusNode.addListener(() {
       if (_focusNode.hasFocus)
         openOverlay();
+      // Workaround for Web to prevent overlay close before item could be tapped
+      else if (kIsWeb)
+        Future.delayed(const Duration(milliseconds: 150))
+            .then((_) => closeOverlay());
       else
         closeOverlay();
     });
@@ -179,6 +184,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                       suggestionBackgroundColor:
                           widget.suggestionBackgroundColor,
                       onItemTapped: (value) {
+                        _previousAsyncSearchText = value;
                         _controller
                           ..value = TextEditingValue(
                               text: value,
@@ -200,7 +206,6 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
     if (_hasOpenedOverlay) {
       _overlayEntry!.remove();
       setState(() {
-        _previousAsyncSearchText = '';
         _hasOpenedOverlay = false;
       });
     }
@@ -214,19 +219,19 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
       }).toList();
       rebuildOverlay();
     } else if (widget.asyncSuggestions != null) {
-      setState(() => _isLoading = true);
+      if (_previousAsyncSearchText == input && input.isNotEmpty) return;
+
       if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
+
+      setState(() {
+        _isLoading = true;
+        _previousAsyncSearchText = input;
+      });
+
       _debounce = Timer(widget.debounceDuration, () async {
-        if (_previousAsyncSearchText != input ||
-            _previousAsyncSearchText.isEmpty ||
-            input.isEmpty) {
-          _suggestions = await widget.asyncSuggestions!(input);
-          setState(() {
-            _isLoading = false;
-            _previousAsyncSearchText = input;
-          });
-          rebuildOverlay();
-        }
+        _suggestions = await widget.asyncSuggestions!(input);
+        setState(() => _isLoading = false);
+        rebuildOverlay();
       });
     }
   }
