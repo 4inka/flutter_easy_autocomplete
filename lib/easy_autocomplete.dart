@@ -184,7 +184,6 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                       suggestionBackgroundColor:
                           widget.suggestionBackgroundColor,
                       onItemTapped: (value) {
-                        _previousAsyncSearchText = value;
                         _controller
                           ..value = TextEditingValue(
                               text: value,
