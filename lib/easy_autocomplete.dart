@@ -196,7 +196,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                       }))));
     }
     if (!_hasOpenedOverlay) {
-      Overlay.of(context)!.insert(_overlayEntry!);
+      Overlay.of(context).insert(_overlayEntry!);
       setState(() => _hasOpenedOverlay = true);
     }
   }
@@ -204,7 +204,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
   void closeOverlay() {
     if (_hasOpenedOverlay) {
       _overlayEntry!.remove();
-      setState(() {
+      setState(() { 
         _hasOpenedOverlay = false;
       });
     }
