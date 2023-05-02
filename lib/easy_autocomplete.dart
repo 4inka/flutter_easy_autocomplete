@@ -95,6 +95,8 @@ class EasyAutocomplete extends StatefulWidget {
   /// Can be used to validate field value
   final String? Function(String?)? validator;
 
+  final double maxListHeight;
+
   /// Creates a autocomplete widget to help you manage your suggestions
   const EasyAutocomplete(
       {Key? key,
@@ -117,7 +119,8 @@ class EasyAutocomplete extends StatefulWidget {
       this.suggestionTextStyle = const TextStyle(),
       this.suggestionBackgroundColor,
       this.debounceDuration = const Duration(milliseconds: 400),
-      this.validator})
+      this.validator,
+      this.maxListHeight = 150})
       : assert(onChanged != null || controller != null,
             'onChanged and controller parameters cannot be both null at the same time'),
         assert(!(controller != null && initialValue != null),
@@ -185,6 +188,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                       suggestionTextStyle: widget.suggestionTextStyle,
                       suggestionBackgroundColor:
                           widget.suggestionBackgroundColor,
+                      maxListHeight: widget.maxListHeight,
                       onItemTapped: (value) {
                         _controller
                           ..value = TextEditingValue(
