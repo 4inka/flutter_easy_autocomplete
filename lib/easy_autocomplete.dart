@@ -90,7 +90,7 @@ class EasyAutocomplete extends StatefulWidget {
   final Widget Function(String data)? suggestionBuilder;
 
   /// Can be used to display custom progress idnicator
-  final Widget? progressIndicatorBuilder;
+  final Widget progressIndicatorBuilder;
 
   /// Can be used to validate field value
   final String? Function(String?)? validator;
@@ -103,7 +103,7 @@ class EasyAutocomplete extends StatefulWidget {
       this.suggestions,
       this.asyncSuggestions,
       this.suggestionBuilder,
-      this.progressIndicatorBuilder,
+      this.progressIndicatorBuilder = const CircularProgressIndicator(),
       this.controller,
       this.decoration = const InputDecoration(),
       this.onChanged,
