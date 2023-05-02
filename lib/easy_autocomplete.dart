@@ -97,7 +97,8 @@ class EasyAutocomplete extends StatefulWidget {
 
   /// Creates a autocomplete widget to help you manage your suggestions
   const EasyAutocomplete(
-      {this.suggestions,
+      {Key? key,
+      this.suggestions,
       this.asyncSuggestions,
       this.suggestionBuilder,
       this.progressIndicatorBuilder,
@@ -176,6 +177,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   showWhenUnlinked: false,
                   offset: Offset(0.0, size.height + 5.0),
                   child: FilterableList(
+                      key: widget.key,
                       loading: _isLoading,
                       suggestionBuilder: widget.suggestionBuilder,
                       progressIndicatorBuilder: widget.progressIndicatorBuilder,
