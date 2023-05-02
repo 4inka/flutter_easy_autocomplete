@@ -1,3 +1,12 @@
+## 1.6.1 - [02-05-2023]
+
+### Added
+* Added `maintainSearchTextOnFocusLost` parameter. Now you can decide if the text inside the searchbox will be maintained even after searchbox is closed
+
+### Fixed
+* Added `validator` parameter. Now you can validate the autocomplete field inside a form
+* Added `progressIndicatorBuilder` parameter. Now you can add a custom progress indicator to be used in async suggestions fetch
+
 ## 1.6.0 - [23-06-2022]
 
 ### Added
