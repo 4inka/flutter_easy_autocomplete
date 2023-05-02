@@ -39,7 +39,8 @@ class FilterableList extends StatelessWidget {
   final Widget? progressIndicatorBuilder;
 
   const FilterableList(
-      {required this.items,
+      {Key? key,
+      required this.items,
       required this.onItemTapped,
       this.suggestionBuilder,
       this.elevation = 5,

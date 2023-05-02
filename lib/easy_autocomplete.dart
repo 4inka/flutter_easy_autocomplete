@@ -90,17 +90,20 @@ class EasyAutocomplete extends StatefulWidget {
   final Widget Function(String data)? suggestionBuilder;
 
   /// Can be used to display custom progress idnicator
-  final Widget? progressIndicatorBuilder;
+  final Widget progressIndicatorBuilder;
 
   /// Can be used to validate field value
   final String? Function(String?)? validator;
 
+  final double maxListHeight;
+
   /// Creates a autocomplete widget to help you manage your suggestions
   const EasyAutocomplete(
-      {this.suggestions,
+      {Key? key,
+      this.suggestions,
       this.asyncSuggestions,
       this.suggestionBuilder,
-      this.progressIndicatorBuilder,
+      this.progressIndicatorBuilder = const CircularProgressIndicator(),
       this.controller,
       this.decoration = const InputDecoration(),
       this.onChanged,
@@ -116,7 +119,8 @@ class EasyAutocomplete extends StatefulWidget {
       this.suggestionTextStyle = const TextStyle(),
       this.suggestionBackgroundColor,
       this.debounceDuration = const Duration(milliseconds: 400),
-      this.validator})
+      this.validator,
+      this.maxListHeight = 150})
       : assert(onChanged != null || controller != null,
             'onChanged and controller parameters cannot be both null at the same time'),
         assert(!(controller != null && initialValue != null),
@@ -176,6 +180,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   showWhenUnlinked: false,
                   offset: Offset(0.0, size.height + 5.0),
                   child: FilterableList(
+                      key: widget.key,
                       loading: _isLoading,
                       suggestionBuilder: widget.suggestionBuilder,
                       progressIndicatorBuilder: widget.progressIndicatorBuilder,
@@ -183,6 +188,7 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                       suggestionTextStyle: widget.suggestionTextStyle,
                       suggestionBackgroundColor:
                           widget.suggestionBackgroundColor,
+                      maxListHeight: widget.maxListHeight,
                       onItemTapped: (value) {
                         _controller
                           ..value = TextEditingValue(
