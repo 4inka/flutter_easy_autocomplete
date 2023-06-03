@@ -89,11 +89,14 @@ class EasyAutocomplete extends StatefulWidget {
   /// Can be used to customize suggestion items
   final Widget Function(String data)? suggestionBuilder;
 
-  /// Can be used to display custom progress idnicator
+  /// Can be used to display custom progress indicator
   final Widget? progressIndicatorBuilder;
 
   /// Can be used to validate field value
   final String? Function(String?)? validator;
+
+  /// Can be used to specify the maximum number of lines
+  final int maxLines;
 
   /// Creates a autocomplete widget to help you manage your suggestions
   const EasyAutocomplete(
@@ -116,6 +119,7 @@ class EasyAutocomplete extends StatefulWidget {
       this.suggestionTextStyle = const TextStyle(),
       this.suggestionBackgroundColor,
       this.debounceDuration = const Duration(milliseconds: 400),
+      this.maxLines = 1,
       this.validator})
       : assert(onChanged != null || controller != null,
             'onChanged and controller parameters cannot be both null at the same time'),
@@ -269,7 +273,8 @@ class _EasyAutocompleteState extends State<EasyAutocomplete> {
                   onEditingComplete: () => closeOverlay(),
                   validator: widget.validator != null
                       ? (value) => widget.validator!(value)
-                      : null // (value) {}
+                      : null, // (value) {}
+                  maxLines: widget.maxLines,
                   )
             ]));
   }

@@ -228,7 +228,8 @@ The above example will generate something like below preview:
 | suggestionBackgroundColor | `Color` | :x: | Can be used to set custom background color to suggestions list |  |
 | debounceDuration | `Duration` | :x: | Used to set the debounce time for async data fetch | Duration(milliseconds: 400) |
 | suggestionBuilder | `Widget Function(String)` | :x: | Can be used to customize suggestion items |  |
-| progressIndicatorBuilder | `Widget` | :x: | Can be used to display custom progress idnicator |  |
+| progressIndicatorBuilder | `Widget` | :x: | Can be used to display custom progress indicator |  |
+| maxLines | `int` | :x: | Can be used to specify the number of lines of the input, default is 1 |  |
 
 ## Issues & Suggestions
 If you encounter any issue you or want to leave a suggestion you can do it by filling an [issue](https://github.com/4inka/flutter_easy_autocomplete/issues).
